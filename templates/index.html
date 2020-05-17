@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,122 +10,85 @@
             text-align: justify;
             text-justify:inter-ideograph;
         }
+        body {
+            background-image: url(../static/bg.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            height: 100vh;
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
+    <script>
+        var deviceWidth=$(window).outerWidth();
+        if(deviceWidth>640){
+            $("html").css("font-size","100px");
+        }else{
+            $("html").css("font-size",deviceWidth/640*100+'px');
+        }
+    </script>
 </head>
 <body>
-    <body style="text-align: center">
-        <div>
+    <div style="position: absolute; top: 10%; left: 10%; right: 10%; background: white">
+        <div style="text-align: center">
             <img id="preview" style="width: 200px">
         </div>
-        <form id="form" method="POST" enctype="multipart/form-data" action="/swap" onsubmit="return check();">
-            <input type="file" multiple="multiple" accept="image/*" name="file" id="file"/>
-            <br><br>
-            <label>性别：</label>
-            <input type="radio" name="sex" value="F"/>男
-            <input type="radio" name="sex" value="M"/>女
-            <br><br>
-            <label>学科：</label>
-            <input type="radio" name="major" value="G"/>工学
-            <input type="radio" name="major" value="L"/>理学
-            <input type="radio" name="major" value="W"/>文学
-            <input type="radio" name="major" value="Y"/>医学
-            <input type="radio" name="major" value="N"/>农学
-            <input type="radio" name="major" value="J"/>军事学
-            <br><br>
-            <input type="submit" style="width: 80px" value="提交"/>
-        </form>
-        <div style="margin: 0 auto; width: 500px">
-            <h3 style="margin-top: 50px">一些说明~</h3>
-            <b>（一）为什么要做这样的一个网站</b>
-            <p>做这样一个网页的初衷是，我自己现在大三嘛，
-                然后有很多关系很好的学长学姐今年毕业，
-                比如以前社团带我的前辈们，以前一起做事情的大伙伴们，
-                许许多多舍不得的人，他们都要毕业了。
+        <form style="margin: 10px" id="form" method="POST" enctype="multipart/form-data" action="/swap" onsubmit="return check();">
+            <div style="text-align: center">
+                <input type="file" multiple="multiple" accept="image/*" name="file" id="file"/>
+            </div>
                 <br><br>
-                但是因为疫情的影响，他们可能都没办法拥有一张属于自己的毕业照。
-                刷着微博、翻着朋友圈，看到许多人都说遗憾。
-                我就在想，能不能为他们做点什么？
-                于是便有了这样一个学士服换脸网站，算是作为学弟的一点心意。
-                祝各位学长学姐们，前程似锦，从此以后未来一帆风顺~
-            </p>
+                <label style="font-weight: bold">性别：</label>
+                <input type="radio" name="sex" value="F"/>男
+                <input type="radio" name="sex" value="M"/>女
+                <br><br>
+                <label style="font-weight: bold">学科：</label>
+                <input type="radio" name="major" value="G"/>工学
+                <input type="radio" name="major" value="L"/>理学
+                <input type="radio" name="major" value="W"/>文学
+                <input type="radio" name="major" value="Y"/>医学
+                <input type="radio" name="major" value="N"/>农学
+                <input type="radio" name="major" value="J"/>军事学
 
-            <b>（二）上传照片会不会风险</b>
-            <p>
-                关于隐私问题，我也考虑了好久怎么解决。
-                从技术的角度上讲，我在代码中没有保存文件的操作，
-                上传的照片直接以数据流的形式在内存中处理，
-                不会写到服务器的硬盘里。
-                也就是说，就算是我也没办法查看上传和换脸后的照片，
-                源代码我也会全部上传到github，欢迎大家参考~
-                有阔以改进的地方请务必多多指教~
-            </p>
-
-            <b>（三）版权问题</b>
-            <p>
-                由于这个demo的本意是做一个演示，所有的学士服模板都来源于百度~
-                如果侵犯到了您的版权请立刻联系我删除~谢谢~
-            </p>
-
-            <b>（四）求学士服模板！！！</b>
-            <P>
-                如果大家看了源代码，应该会发现留下了一些接口~，
-                因为我的计划是能够合成<b>多人的合照</b>（技术上也已经实现了，见下图~）
-            </P>
-            <img src="../static/demo.png" width="500px">
-            <p>
-                但由于模板稀缺（网上清晰的学士服多人合照太少了~），
-                还没有办法投入使用，
-                包括目前的单人版使用的都是网图，种类也比较少，
-                因此，希望大家可以投稿自己帅帅美美的学士服照片，
-                唯一的用途就是扩充学士服模板库！比心心~<br><br>
-                请把【照片】和【昵称】发送到我的邮箱：zuygcn@163.com
-                我会把所有投稿的学长学姐昵称放到网站的【致谢】中滴！
-                （最好是不戴眼镜的正脸照~AI太笨了侧脸照还认不全~）
-            </P>
-
-            <b>（五）致谢</b>
-            <p>
-                （1）首先感谢华为云ModelArts提供的技术支持~<br>
-                （真的不是广告~多人版的人脸识别就使用了ModelArts的技术~真香）
-                <br>
-                （2）然后是许多参考资料：<br>
-                换脸技术：<br>https://github.com/Jacen789/simple_faceswap<br>
-                图片拼接技术：<br>https://blog.csdn.net/xun527/article/details/86577029<br>
-                环境配置问题：<br>https://blog.csdn.net/zhang475546259/article/details/84104368
-                （3）感谢无私投稿的超级无敌nice的学长学姐们~<br>
-                <b>（旺铺招租ing）</b>
-            </p>
+            <br><br>
+            <div style="text-align: center">
+                <input type="submit" style="width: 80px;" value="提交"/>
+            </div>
+        </form>
+        <div style="text-align: center; margin-top: 10px">
+            <a href="/notice">关于网站的一些说明~</a>
         </div>
-
-        <script>
-            var fileDom = document.getElementById("file");
-            var previewDom = document.getElementById("preview");
-            fileDom.addEventListener("change", e=>{
-                var file = fileDom.files[0];
-                // check if moulds contains a valid image file
-                if (!file || file.type.indexOf("image/") < 0) {
-                    fileDom.value = "";
-                    previewDom.src = "";
-                    return;
-                }
-
-                // use FileReader to load image and show preview of the image
-                var fileReader = new FileReader();
-                fileReader.onload = e=>{
-                    previewDom.src = e.target.result;
-                };
-                fileReader.readAsDataURL(file);
-            });
-
-            var formDom = document.getElementById("form");
-            function check() {
-                var file = fileDom.files[0];
-                // check if moulds contains a valid image file
-                if (!file || file.type.indexOf("image/") < 0) {
-                    return false;
-                }
-                return true;
+    </div>
+    <script>
+        var fileDom = document.getElementById("file");
+        var previewDom = document.getElementById("preview");
+        fileDom.addEventListener("change", e=>{
+            var file = fileDom.files[0];
+            // check if moulds contains a valid image file
+            if (!file || file.type.indexOf("image/") < 0) {
+                fileDom.value = "";
+                previewDom.src = "";
+                return;
             }
-        </script>
+
+            // use FileReader to load image and show preview of the image
+            var fileReader = new FileReader();
+            fileReader.onload = e=>{
+                previewDom.src = e.target.result;
+            };
+            fileReader.readAsDataURL(file);
+        });
+
+        var formDom = document.getElementById("form");
+        function check() {
+            var file = fileDom.files[0];
+            // check if moulds contains a valid image file
+            if (!file || file.type.indexOf("image/") < 0) {
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
