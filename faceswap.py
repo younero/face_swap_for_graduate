@@ -2,7 +2,7 @@ import cv2
 import dlib
 import numpy as np
 
-predictor_path = 'shape_predictor_68_face_landmarks.dat' # 模型路径
+predictor_path = 'static/shape_predictor_68_face_landmarks.dat' # 模型路径
 
 detector = dlib.get_frontal_face_detector()  # dlib的正向人脸检测器
 predictor = dlib.shape_predictor(predictor_path)  # dlib的人脸形状检测器
@@ -17,7 +17,7 @@ def get_face_landmarks(image, face_detector, shape_predictor):
     dets = face_detector(image, 1)
     num_faces = len(dets)
     if num_faces == 0:
-        print("Sorry, there were no faces found.")
+        print("Face Not Found")
         exit()
     shape = shape_predictor(image, dets[0])
     face_landmarks = np.array([[p.x, p.y] for p in shape.parts()])
@@ -69,8 +69,8 @@ def swap(im1, face_path):
 
     im2 =cv2.imread(face_path)  # camera_image
     landmarks2 = get_face_landmarks(im2, detector, predictor)  # 68_face_landmarks
-    im2_size = get_image_size(im2)  # 摄像头图片大小
-    im2_mask = get_face_mask(im2_size, landmarks2)  # 摄像头图片人脸掩模
+    im2_size = get_image_size(im2)  # 模板图大小
+    im2_mask = get_face_mask(im2_size, landmarks2)  # 模板图片人脸掩模
 
     affine_im1 = get_affine_image(im1, im2, landmarks1, landmarks2)  # im1（脸图）仿射变换后的图片
     affine_im1_mask = get_affine_image(im1_mask, im2, landmarks1, landmarks2)  # im1（脸图）仿射变换后的图片的人脸掩模

@@ -1,27 +1,25 @@
 from flask import *
 from facedetect import excute
+import base64
+
 
 app = Flask(__name__)
 
 @app.route('/swap', methods=['post'])
 def swap_page():
-    img = request.files.get('file')
+    ims = request.files.getlist('file')
     sex = request.form.get('sex')
     major = request.form.get('major')
+    degree = request.form.get('degree')
 
-    f = excute(img, sex, major)
+    f = excute(ims, sex, major, degree)
+    img_stream = base64.b64encode(f.getvalue()).decode()
 
-    resp = make_response(f.getvalue())
-    resp.headers["Content-Type"] = "image/jpeg"
-    return resp
-
-@app.route('/notice')
-def notice():
-    return render_template('notice.html')
+    return render_template('result.html', img_stream=img_stream)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(port=5000)
